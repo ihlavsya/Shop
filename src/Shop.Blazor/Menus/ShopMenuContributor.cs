@@ -34,6 +34,21 @@ public class ShopMenuContributor : IMenuContributor
             )
         );
 
+        context.Menu.AddItem(
+            new ApplicationMenuItem(
+            "Shop",
+            l["Menu:Shop"],
+            icon: "fa fa-book"
+        ).AddItem(
+        new ApplicationMenuItem(
+            "Shop.Products",
+            l["Menu:Products"],
+            url: "/products"
+            )
+           )
+        );
+
+
         if (MultiTenancyConsts.IsEnabled)
         {
             administration.SetSubItemOrder(TenantManagementMenuNames.GroupName, 1);
