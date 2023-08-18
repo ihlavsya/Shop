@@ -1,5 +1,45 @@
-﻿<h3>Products</h3>
+﻿@page "/products"
+@using Volo.Abp.Application.Dtos
+@using Shop.Products
+@using Shop.Localization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<ShopResource> L
+@inherits AbpCrudPageBase<IProductAppService, ProductDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateProductDto>
 
-@code {
-
-}
+<Card>
+    <CardHeader>
+        <h2>@L["Products"]</h2>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="ProductDto"
+                  Data="Entities"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="ProductDto"
+                                Field="@nameof(ProductDto.ProductCategory)"
+                                Caption="@L["Category"]">
+                    <DisplayTemplate>
+                        @L[$"Enum:ProductCategories.{context.ProductCategory}"]
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDto"
+                                Field="@nameof(ProductDto.PhotoPath)"
+                                Caption="@L["PhotoPath"]">
+                    <DisplayTemplate>
+                        <img src="@context.PhotoPath">
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="ProductDto"
+                                Field="@nameof(ProductDto.CreationTime)"
+                                Caption="@L["CreationTime"]">
+                    <DisplayTemplate>
+                        @context.CreationTime.ToLongDateString()
+                    </DisplayTemplate>
+                </DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>

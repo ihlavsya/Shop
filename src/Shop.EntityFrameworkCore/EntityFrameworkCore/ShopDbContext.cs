@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Orders;
+using Shop.Products;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -24,6 +27,8 @@ public class ShopDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Order> Orders { get; set; }
 
     #region Entities from the modules
 
@@ -82,5 +87,28 @@ public class ShopDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<Product>(p =>
+        {
+            p.ToTable(ShopConsts.DbTablePrefix + "Products", ShopConsts.DbSchema);
+            p.ConfigureByConvention();
+            p.Property(x => x.ProductCategory).IsRequired();
+            p.Property(x => x.PhotoPath).HasMaxLength(1000);
+        });
+
+        builder.Entity<Order>(o =>
+        {
+            o.ToTable(ShopConsts.DbTablePrefix + "Orders", ShopConsts.DbSchema);
+            o.ConfigureByConvention();
+            o.Property(x => x.ReferenceNo).IsRequired();
+            o.Property(x => x.TotalItemCount).IsRequired();
+        });
+
+        builder.Entity<OrderLine>(ol =>
+        {
+            ol.ToTable(ShopConsts.DbTablePrefix + "OrderLines", ShopConsts.DbSchema);
+            ol.ConfigureByConvention();
+            ol.HasKey(ol => new { ol.OrderId, ol.ProductId });
+            ol.Property(x => x.Count).IsRequired();
+        });
     }
 }

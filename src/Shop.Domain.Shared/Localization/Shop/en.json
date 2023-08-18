@@ -14,12 +14,13 @@
         "NewProduct": "New Product",
         "Name": "Name",
         "Category": "Category",
+        "PhotoPath":  "Product",
         "Price": "Price",
         "CreationTime": "Creation time",
         "AreYouSure": "Are you sure?",
         "AreYouSureToDelete": "Are you sure you want to delete this item?",
         "Enum:ProductCategories.0": "Women's Fashion",
         "Enum:ProductCategories.1": "Men's Fashion",
-        "Enum:ProductCategories.2": "Phones & Telecommunication",
+        "Enum:ProductCategories.2": "Phones & Telecommunication"
     }
 }

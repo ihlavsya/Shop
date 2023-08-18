@@ -24,6 +24,100 @@ namespace Shop.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Shop.Orders.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("ReferenceNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("TotalItemCount")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppOrders", (string)null);
+                });
+
+            modelBuilder.Entity("Shop.Orders.OrderLine", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<short>("Count")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("OrderId", "ProductId");
+
+                    b.ToTable("AppOrderLines", (string)null);
+                });
+
+            modelBuilder.Entity("Shop.Products.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<int>("EntityVersion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.Property<string>("PhotoPath")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("ProductCategory")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppProducts", (string)null);
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -208,9 +302,9 @@ namespace Shop.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("ChangeTime");
 
-                    b.Property<byte>("ChangeType")
+                    b.Property<byte>("Changetype")
                         .HasColumnType("tinyint")
-                        .HasColumnName("ChangeType");
+                        .HasColumnName("Changetype");
 
                     b.Property<string>("EntityId")
                         .IsRequired()
@@ -221,11 +315,11 @@ namespace Shop.Migrations
                     b.Property<Guid?>("EntityTenantId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EntityTypeFullName")
+                    b.Property<string>("EntitytypeFullName")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)")
-                        .HasColumnName("EntityTypeFullName");
+                        .HasColumnName("EntitytypeFullName");
 
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("nvarchar(max)")
@@ -239,7 +333,7 @@ namespace Shop.Migrations
 
                     b.HasIndex("AuditLogId");
 
-                    b.HasIndex("TenantId", "EntityTypeFullName", "EntityId");
+                    b.HasIndex("TenantId", "EntitytypeFullName", "EntityId");
 
                     b.ToTable("AbpEntityChanges", (string)null);
                 });
@@ -269,11 +363,11 @@ namespace Shop.Migrations
                         .HasColumnType("nvarchar(128)")
                         .HasColumnName("PropertyName");
 
-                    b.Property<string>("PropertyTypeFullName")
+                    b.Property<string>("PropertytypeFullName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)")
-                        .HasColumnName("PropertyTypeFullName");
+                        .HasColumnName("PropertytypeFullName");
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier")
@@ -391,7 +485,7 @@ namespace Shop.Migrations
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<string>("ValueType")
+                    b.Property<string>("Valuetype")
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 
@@ -466,7 +560,7 @@ namespace Shop.Migrations
                     b.ToTable("AbpFeatureValues", (string)null);
                 });
 
-            modelBuilder.Entity("Volo.Abp.Identity.IdentityClaimType", b =>
+            modelBuilder.Entity("Volo.Abp.Identity.IdentityClaimtype", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -504,12 +598,12 @@ namespace Shop.Migrations
                     b.Property<bool>("Required")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ValueType")
+                    b.Property<int>("Valuetype")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("AbpClaimTypes", (string)null);
+                    b.ToTable("AbpClaimtypes", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityLinkUser", b =>
@@ -594,14 +688,14 @@ namespace Shop.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ClaimType")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("ClaimValue")
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("Claimtype")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
@@ -860,14 +954,14 @@ namespace Shop.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ClaimType")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("ClaimValue")
                         .HasMaxLength(1024)
                         .HasColumnType("nvarchar(1024)");
+
+                    b.Property<string>("Claimtype")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<Guid?>("TenantId")
                         .HasColumnType("uniqueidentifier")
@@ -1134,7 +1228,7 @@ namespace Shop.Migrations
                         .HasColumnType("nvarchar(40)")
                         .HasColumnName("ConcurrencyStamp");
 
-                    b.Property<string>("ConsentType")
+                    b.Property<string>("Consenttype")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -1196,7 +1290,7 @@ namespace Shop.Migrations
                     b.Property<string>("Requirements")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("type")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -1273,13 +1367,13 @@ namespace Shop.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("type")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationId", "Status", "Subject", "Type");
+                    b.HasIndex("ApplicationId", "Status", "Subject", "type");
 
                     b.ToTable("OpenIddictAuthorizations", (string)null);
                 });
@@ -1438,7 +1532,7 @@ namespace Shop.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("type")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -1448,7 +1542,7 @@ namespace Shop.Migrations
 
                     b.HasIndex("ReferenceId");
 
-                    b.HasIndex("ApplicationId", "Status", "Subject", "Type");
+                    b.HasIndex("ApplicationId", "Status", "Subject", "type");
 
                     b.ToTable("OpenIddictTokens", (string)null);
                 });
@@ -1680,6 +1774,15 @@ namespace Shop.Migrations
                     b.ToTable("AbpTenantConnectionStrings", (string)null);
                 });
 
+            modelBuilder.Entity("Shop.Orders.OrderLine", b =>
+                {
+                    b.HasOne("Shop.Orders.Order", null)
+                        .WithMany("OrderLines")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
                 {
                     b.HasOne("Volo.Abp.AuditLogging.AuditLog", null)
@@ -1820,6 +1923,11 @@ namespace Shop.Migrations
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Shop.Orders.Order", b =>
+                {
+                    b.Navigation("OrderLines");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
