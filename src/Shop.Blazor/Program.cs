@@ -34,6 +34,7 @@ public class Program
                 .UseSerilog();
             await builder.AddApplicationAsync<ShopBlazorModule>();
             var app = builder.Build();
+            //app.UseStaticFiles();
             await app.InitializeApplicationAsync();
             await app.RunAsync();
             return 0;

@@ -8,9 +8,9 @@ namespace Shop.Products
     public class CreateUpdateProductDto
     {
         [Required]
-        public ProductCategories ProductCategory { get; private set; }
+        public ProductCategories ProductCategory { get; set; }
         [Required]
         [StringLength(1000)]
-        public string? PhotoPath { get; private set; }
+        public string? PhotoPath { get; set; }
     }
 }

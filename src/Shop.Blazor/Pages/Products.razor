@@ -4,42 +4,150 @@
 @using Shop.Localization
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<ShopResource> L
-@inherits AbpCrudPageBase<IProductAppService, ProductDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateProductDto>
-
+@using Volo.Abp.AspNetCore.Components.Web;
+@using System.IO;
+@inherits ProductCrudPage;
 <Card>
-    <CardHeader>
-        <h2>@L["Products"]</h2>
-    </CardHeader>
-    <CardBody>
-        <DataGrid TItem="ProductDto"
-                  Data="Entities"
-                  ReadData="OnDataGridReadAsync"
-                  TotalItems="TotalCount"
-                  ShowPager="true"
-                  PageSize="PageSize">
-            <DataGridColumns>
-                <DataGridColumn TItem="ProductDto"
-                                Field="@nameof(ProductDto.ProductCategory)"
-                                Caption="@L["Category"]">
-                    <DisplayTemplate>
-                        @L[$"Enum:ProductCategories.{context.ProductCategory}"]
-                    </DisplayTemplate>
-                </DataGridColumn>
-                <DataGridColumn TItem="ProductDto"
-                                Field="@nameof(ProductDto.PhotoPath)"
-                                Caption="@L["PhotoPath"]">
-                    <DisplayTemplate>
-                        <img src="@context.PhotoPath">
-                    </DisplayTemplate>
-                </DataGridColumn>
-                <DataGridColumn TItem="ProductDto"
-                                Field="@nameof(ProductDto.CreationTime)"
-                                Caption="@L["CreationTime"]">
-                    <DisplayTemplate>
-                        @context.CreationTime.ToLongDateString()
-                    </DisplayTemplate>
-                </DataGridColumn>
-            </DataGridColumns>
-        </DataGrid>
-    </CardBody>
+	<CardHeader>
+		<Row Class="justify-content-between">
+			<Column ColumnSize="ColumnSize.IsAuto">
+				<h2>@L["Products"]</h2>
+			</Column>
+			<Column ColumnSize="ColumnSize.IsAuto">
+				<Button Color="Color.Primary"
+						Clicked="OpenCreateModalAsync">
+					@L["NewProduct"]
+				</Button>
+			</Column>
+		</Row>
+	</CardHeader>
+	<CardBody>
+		<DataGrid TItem="ProductDto"
+				  Data="Entities"
+				  ReadData="OnDataGridReadAsync"
+				  TotalItems="TotalCount"
+				  ShowPager="true"
+				  PageSize="PageSize">
+			<DataGridColumns>
+				<DataGridEntityActionsColumn TItem="ProductDto" @ref="@EntityActionsColumn">
+					<DisplayTemplate>
+						<EntityActions TItem="ProductDto" EntityActionsColumn="@EntityActionsColumn">
+							<EntityAction TItem="ProductDto"
+										  Text="@L["Edit"]"
+										  Clicked="() => OpenEditModalAsync(context)" />
+						</EntityActions>
+					</DisplayTemplate>
+				</DataGridEntityActionsColumn>
+
+				<DataGridColumn TItem="ProductDto"
+								Field="@nameof(ProductDto.ProductCategory)"
+								Caption="@L["Category"]">
+					<DisplayTemplate>
+						@L[$"Enum:ProductCategories.{(int)context.ProductCategory}"]
+					</DisplayTemplate>
+				</DataGridColumn>
+				<DataGridColumn TItem="ProductDto"
+								Field="@nameof(ProductDto.PhotoPath)"
+								Caption="@L["PhotoPath"]">
+					<DisplayTemplate>
+						@if (context.PhotoPath is not null)
+						{
+							<img src="/product-images/Screenshot_1.png" alt="product" />
+						}
+					</DisplayTemplate>
+				</DataGridColumn>
+				<DataGridColumn TItem="ProductDto"
+								Field="@nameof(ProductDto.CreationTime)"
+								Caption="@L["CreationTime"]">
+					<DisplayTemplate>
+						@context.CreationTime.ToLongDateString()
+					</DisplayTemplate>
+				</DataGridColumn>
+			</DataGridColumns>
+		</DataGrid>
+	</CardBody>
 </Card>
+
+<Modal @ref="@CreateModal">
+	<ModalBackdrop />
+	<ModalContent IsCentered="true">
+		<Form>
+			<ModalHeader>
+				<ModalTitle>@L["NewProduct"]</ModalTitle>
+				<CloseButton Clicked="CloseCreateModalAsync" />
+			</ModalHeader>
+			<ModalBody>
+				<Validations @ref="@CreateValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+					<Field>
+						<FieldLabel>@L["Category"]</FieldLabel>
+						<Select TValue="ProductCategories" @bind-SelectedValue="@NewEntity.ProductCategory">
+							@foreach (int productCategory in Enum.GetValues(typeof(ProductCategories)))
+							{
+								<SelectItem TValue="ProductCategories" Value="@((ProductCategories) productCategory)">
+									@L[$"Enum:ProductCategories.{(int)productCategory}"]
+								</SelectItem>
+							}
+						</Select>
+					</Field>
+					<Field>
+						<FileEdit Changed="OnFilesUploaded" Multiple Filter=".jpg, .png, .gif" />
+					</Field>
+				</Validations>
+			</ModalBody>
+			<ModalFooter>
+				<Button Color="Color.Secondary"
+						Clicked="CloseCreateModalAsync">
+					@L["Cancel"]
+				</Button>
+				<Button Color="Color.Primary"
+						Type="@ButtonType.Submit"
+						PreventDefaultOnSubmit="true"
+						Clicked="CreateEntityAsync">
+					@L["Save"]
+				</Button>
+			</ModalFooter>
+		</Form>
+	</ModalContent>
+</Modal>
+
+<Modal @ref="@EditModal">
+	<ModalBackdrop />
+	<ModalContent IsCentered="true">
+		<Form>
+			<ModalHeader>
+				<ModalTitle>"Product"</ModalTitle>
+				<CloseButton Clicked="CloseEditModalAsync" />
+			</ModalHeader>
+			<ModalBody>
+				<Validations @ref="@EditValidationsRef" Model="@NewEntity" ValidateOnLoad="false">
+					<Field>
+						<FieldLabel>@L["Category"]</FieldLabel>
+						<Select TValue="ProductCategories" @bind-SelectedValue="@EditingEntity.ProductCategory">
+							@foreach (int category in Enum.GetValues(typeof(ProductCategories)))
+							{
+								<SelectItem TValue="ProductCategories" Value="@((ProductCategories) category)">
+									@L[$"Enum:ProductCategories.{(int)category}"]
+								</SelectItem>
+							}
+						</Select>
+					</Field>
+					<Field>
+						<FileEdit Changed="OnFilesUploaded" Multiple Filter=".jpg, .png, .gif" />
+					</Field>
+				</Validations>
+			</ModalBody>
+			<ModalFooter>
+				<Button Color="Color.Secondary"
+						Clicked="CloseEditModalAsync">
+					@L["Cancel"]
+				</Button>
+				<Button Color="Color.Primary"
+						Type="@ButtonType.Submit"
+						PreventDefaultOnSubmit="true"
+						Clicked="UpdateEntityAsync">
+					@L["Save"]
+				</Button>
+			</ModalFooter>
+		</Form>
+	</ModalContent>
+</Modal>

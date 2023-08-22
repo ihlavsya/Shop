@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Identity;
 
 namespace Shop.Products
 {
@@ -11,5 +13,6 @@ namespace Shop.Products
         PagedAndSortedResultRequestDto, //Used for paging/sorting
         CreateUpdateProductDto>
     {
-    }
+        //Task<CreateUpdateProductDto> UpdateAsync(CreateUpdateProductDto input);
+	}
 }

@@ -12,5 +12,6 @@ public class ShopApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         CreateMap<Product, ProductDto>();
         CreateMap<CreateUpdateProductDto, Product>();
-    }
+		CreateMap<ProductDto, CreateUpdateProductDto>();
+	}
 }

@@ -33,5 +33,12 @@ namespace Shop.Products
             PhotoPath = photoPath;
             EntityVersion = 0;
         }
+
+        public void Update(ProductCategories productCategory, string photoPath)
+        {
+			ProductCategory = productCategory;
+			PhotoPath = photoPath;
+			EntityVersion++;
+		}
     }
 }
