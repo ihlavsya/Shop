@@ -10,22 +10,22 @@ using Volo.Abp.TenantManagement;
 namespace Shop;
 
 [DependsOn(
-    typeof(ShopDomainModule),
-    typeof(AbpAccountApplicationModule),
-    typeof(ShopApplicationContractsModule),
-    typeof(AbpIdentityApplicationModule),
-    typeof(AbpPermissionManagementApplicationModule),
-    typeof(AbpTenantManagementApplicationModule),
-    typeof(AbpFeatureManagementApplicationModule),
-    typeof(AbpSettingManagementApplicationModule)
-    )]
+	typeof(ShopDomainModule),
+	typeof(AbpAccountApplicationModule),
+	typeof(ShopApplicationContractsModule),
+	typeof(AbpIdentityApplicationModule),
+	typeof(AbpPermissionManagementApplicationModule),
+	typeof(AbpTenantManagementApplicationModule),
+	typeof(AbpFeatureManagementApplicationModule),
+	typeof(AbpSettingManagementApplicationModule)
+	)]
 public class ShopApplicationModule : AbpModule
 {
-    public override void ConfigureServices(ServiceConfigurationContext context)
-    {
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<ShopApplicationModule>();
-        });
-    }
+	public override void ConfigureServices(ServiceConfigurationContext context)
+	{
+		Configure<AbpAutoMapperOptions>(options =>
+		{
+			options.AddMaps<ShopApplicationModule>();
+		});
+	}
 }

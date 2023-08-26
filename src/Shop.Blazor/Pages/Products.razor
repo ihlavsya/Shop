@@ -47,13 +47,13 @@
 					</DisplayTemplate>
 				</DataGridColumn>
 				<DataGridColumn TItem="ProductDto"
-								Field="@nameof(ProductDto.PhotoPath)"
+	@*							Field="@nameof(ProductDto.PhotoPath)"*@
 								Caption="@L["PhotoPath"]">
 					<DisplayTemplate>
-						@if (context.PhotoPath is not null)
+@*						@if (context.PhotoPath is not null)
 						{
 							<img src="/product-images/Screenshot_1.png" alt="product" />
-						}
+						}*@
 					</DisplayTemplate>
 				</DataGridColumn>
 				<DataGridColumn TItem="ProductDto"

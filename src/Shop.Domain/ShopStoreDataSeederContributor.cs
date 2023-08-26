@@ -27,11 +27,11 @@ namespace Shop
             if (await _productRepository.GetCountAsync() <= 0)
             {
                 await _productRepository.InsertAsync(
-                    new Product(_guidGenerator.Create(), ProductCategories.WomensFashion, "C:\\Users\\User\\Desktop\\Screenshot_1.png"),
+                    new Product(_guidGenerator.Create(), ProductCategories.WomensFashion),
                     autoSave: true
                 );
                 await _productRepository.InsertAsync(
-                    new Product(_guidGenerator.Create(), ProductCategories.MensFashion, "C:\\Users\\User\\Desktop\\Screenshot_2.png"),
+                    new Product(_guidGenerator.Create(), ProductCategories.MensFashion),
                     autoSave: true
                 );
             }

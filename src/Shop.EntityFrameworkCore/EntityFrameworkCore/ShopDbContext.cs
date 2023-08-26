@@ -92,7 +92,6 @@ public class ShopDbContext :
             p.ToTable(ShopConsts.DbTablePrefix + "Products", ShopConsts.DbSchema);
             p.ConfigureByConvention();
             p.Property(x => x.ProductCategory).IsRequired();
-            p.Property(x => x.PhotoPath).HasMaxLength(1000);
         });
 
         builder.Entity<Order>(o =>

@@ -11,7 +11,8 @@ namespace Shop.Products
     public interface IProductAppService :ICrudAppService<ProductDto, //Used to show products
         Guid, //Primary key of the product entity
         PagedAndSortedResultRequestDto, //Used for paging/sorting
-        CreateUpdateProductDto>
+        CreateProductDto, 
+        UpdateProductDto>
     {
         //Task<CreateUpdateProductDto> UpdateAsync(CreateUpdateProductDto input);
 	}

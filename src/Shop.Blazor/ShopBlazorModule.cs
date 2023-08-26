@@ -90,7 +90,7 @@ public class ShopBlazorModule : AbpModule
         var hostingEnvironment = context.Services.GetHostingEnvironment();
         var configuration = context.Services.GetConfiguration();
 
-        ConfigureAuthentication(context);
+		ConfigureAuthentication(context);
         ConfigureUrls(configuration);
         ConfigureBundles();
         ConfigureAutoMapper();
@@ -198,7 +198,7 @@ public class ShopBlazorModule : AbpModule
         {
             options.ConventionalControllers.Create(typeof(ShopApplicationModule).Assembly);
         });
-    }
+	}
 
     private void ConfigureAutoMapper()
     {

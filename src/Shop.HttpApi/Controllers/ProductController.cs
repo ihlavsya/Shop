@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Shop.Products;
@@ -13,8 +15,6 @@ using Volo.Abp.DependencyInjection;
 
 namespace Shop.Controllers
 {
-	//[Dependency(ReplaceServices = true)]
-	//[ExposeServices(typeof(Controller))]
 	public class ProductController : Controller
 	{
 		private readonly IProductAppService _productAppService;
@@ -22,11 +22,25 @@ namespace Shop.Controllers
 		{
 			_productAppService = productAppService;
 		}
-		[HttpPut("api/app/products/{id}")]
-		public Task<ProductDto> UpdateEntityAsync(Guid id, CreateUpdateProductDto createUpdateProductDto)
+		//[HttpPut("api/app/product/{id}")]
+		//public async Task<ProductDto> UpdateEntityAsync(Guid id, UpdateProductDto updateProductDto)
+		//{
+		//	var productDto = await _productAppService.UpdateAsync(id, updateProductDto);
+		//	return productDto;
+		//}
+
+		[HttpPost("api/app/product")]
+		public async Task<ProductDto> CreateEntityAsync(CreateProductDto createProductDto)
 		{
-			var a = 3;
-			return new Task<ProductDto>(() => new ProductDto());
+			var productDto = await _productAppService.CreateAsync(createProductDto);
+			return productDto;
+		}
+
+		[HttpGet("api/app/product/{id}")]
+		public async Task<ProductDto> GetEntityAsync(Guid id)
+		{
+			var productDto = await _productAppService.GetAsync(id);
+			return productDto;
 		}
 	}
 }

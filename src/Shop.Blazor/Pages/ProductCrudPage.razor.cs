@@ -8,7 +8,7 @@ using Volo.Abp.BlazoriseUI;
 
 namespace Shop.Blazor.Pages
 {
-	public class ProductCrudPage : AbpCrudPageBase<IProductAppService, ProductDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateProductDto>
+	public class ProductCrudPage : AbpCrudPageBase<IProductAppService, ProductDto, Guid, PagedAndSortedResultRequestDto, CreateProductDto, UpdateProductDto>
 	{
 		protected override async Task<ProductDto> UpdateEntityAsync()
 		{
@@ -28,7 +28,6 @@ namespace Shop.Blazor.Pages
 			{
 				foreach (var file in e.Files)
 				{
-					NewEntity.PhotoPath = file.Name;
 					// A stream is going to be the destination stream we're writing to.
 					try
 					{
