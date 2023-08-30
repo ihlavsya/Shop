@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Files;
 using Shop.Orders;
 using Shop.Products;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -93,6 +94,15 @@ public class ShopDbContext :
             p.ConfigureByConvention();
             p.Property(x => x.ProductCategory).IsRequired();
         });
+
+        builder.Entity<File>(f =>
+        {
+			f.ToTable(ShopConsts.DbTablePrefix + "Files", ShopConsts.DbSchema);
+			f.ConfigureByConvention();
+			f.Property(x => x.Name).IsRequired();
+            f.Property(x => x.Content).IsRequired();
+			f.HasOne<Product>().WithMany().HasForeignKey(x => x.ProductId).IsRequired();
+		});
 
         builder.Entity<Order>(o =>
         {
